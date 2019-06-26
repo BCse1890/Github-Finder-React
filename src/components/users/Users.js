@@ -1,30 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import UserItem from "./UserItem";
+import Spinner from "../layout/Spinner";
+import PropTypes from "prop-types";
 
-export class Users extends Component {
-  state = {
-    users: [
-      {
-        id: "1",
-        login: "mojombo",
-        html_url: "https://github.com/mojombo"
-      },
-      {
-        id: "2",
-        login: "defunkt",
-        html_url: "https://github.com/defunkt"
-      },
-      {
-        id: "3",
-        login: "pjhyett",
-        html_url: "https://github.com/pjhyett"
-      }
-    ]
-  };
-  render() {
+const Users = ({ users, loading }) => {
+  if (loading) {
+    return <Spinner />;
+  } else {
     return (
       <div style={userStyle}>
-        {this.state.users.map(user => (
+        {users.map(user => (
           // each child must have unique key component so use key in div
           // pass in user from mapping as prop into UserItem
           <UserItem key={user.id} user={user} />
@@ -32,7 +17,12 @@ export class Users extends Component {
       </div>
     );
   }
-}
+};
+
+Users.propTypes = {
+  users: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired
+};
 
 const userStyle = {
   display: "grid",
