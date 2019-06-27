@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
 import Search from "./components/users/Search";
+import Alert from "./components/layout/Alert";
 import axios from "axios";
 import "./App.css";
 
 class App extends Component {
   state = {
     users: [],
-    loading: false
+    loading: false,
+    alert: null
   };
 
   // load user data from github repo and use promise to send
@@ -45,6 +47,13 @@ class App extends Component {
     this.setState({ users: [], loading: false });
   };
 
+  // SetAlert
+  setAlert = (msg, type) => {
+    this.setState({ alert: { msg: msg, type: type } });
+    // message alert appears and remains for 3000ms
+    setTimeout(() => this.setState({ alert: null }), 3000);
+  };
+
   render() {
     // can destructure as this line to pull out users and loading
     // and we can remove this.state from code below - also doing same
@@ -54,10 +63,12 @@ class App extends Component {
       <div className="App">
         <Navbar />
         <div className="container">
+          <Alert alert={this.state.alert} />
           <Search
             searchUsers={this.searchUsers}
             clearUsers={this.clearUsers}
             showClear={this.state.users.length > 0 ? true : false}
+            setAlert={this.setAlert}
           />
           <Users loading={this.state.loading} users={this.state.users} />
         </div>
